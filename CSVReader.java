@@ -80,6 +80,7 @@ public class CSVReader implements DataReader {
 		}
 
 		scanner.close();
+		numRows = rowNum;
 		return matrix;
 	}
 
@@ -122,7 +123,7 @@ public class CSVReader implements DataReader {
 		if (buffer.toString().trim().length() > 0) { // deal with last attribute name
 			attributeNames[position++] = buffer.toString().trim();
 		}
-
+		numColumns = buffer.length();
 	}
 
 	private void populateRow(String str, int currentRow) {
@@ -169,23 +170,14 @@ public class CSVReader implements DataReader {
 	}
 
 	public String getSourceId() {
-		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		return filePath;
 	}
 
 	public int getNumberOfColumns() {
-		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return -1;
+		return numColumns;
 	}
 
 	public int getNumberOfDataRows() {
-		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return -1;
+		return numRows;
 	}
 }
