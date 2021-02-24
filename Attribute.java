@@ -42,37 +42,32 @@ public class Attribute {
 	 *                      array rather than merely stating this.values = values.
 	 */
 	public Attribute(String name, int absoluteIndex, AttributeType type, String[] values) {
-		// WRITE YOUR CODE HERE!		
+		// WRITE YOUR CODE HERE!
+		this.name = name;
+		this.absoluteIndex = absoluteIndex;
+		this.type = type;
+		this.values = values;
 	}
 
 	/**
 	 * @return the name of the attribute
 	 */
 	public String getName() {
-		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		return name;
 	}
 
 	/**
 	 * @return the absolute index (column number) of the attribute
 	 */
 	public int getAbsoluteIndex() {
-		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return -1;
+		return absoluteIndex;
 	}
 
 	/**
 	 * @return the type of the attribute
 	 */
 	public AttributeType getType() {
-		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		return type;
 	}
 
 	/**
@@ -81,10 +76,8 @@ public class Attribute {
 	 *         no other object can change the value set of this attribute.
 	 */
 	public String[] getValues() {
-		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		Attribute copy = this.clone();
+		return copy.values;
 	}
 
 	/**
@@ -110,10 +103,9 @@ public class Attribute {
 	 * @return a (deep) copy the attribute
 	 */
 	public Attribute clone() {
-		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		Attribute copy = new Attribute(name, absoluteIndex, type, values);
+
+		return copy;
 	}
 
 	/**
