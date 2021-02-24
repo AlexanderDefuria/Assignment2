@@ -42,7 +42,11 @@ public class Attribute {
 	 *                      array rather than merely stating this.values = values.
 	 */
 	public Attribute(String name, int absoluteIndex, AttributeType type, String[] values) {
-		// WRITE YOUR CODE HERE!		
+		// WRITE YOUR CODE HERE!
+		this.type = type;
+		this.name = name;
+		this.absoluteIndex = absoluteIndex;
+		this.values = values;
 	}
 
 	/**
@@ -50,9 +54,7 @@ public class Attribute {
 	 */
 	public String getName() {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		return this.name;
 	}
 
 	/**
@@ -60,9 +62,7 @@ public class Attribute {
 	 */
 	public int getAbsoluteIndex() {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return -1;
+		return this.absoluteIndex;
 	}
 
 	/**
@@ -70,9 +70,7 @@ public class Attribute {
 	 */
 	public AttributeType getType() {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		return this.type;
 	}
 
 	/**
@@ -82,9 +80,9 @@ public class Attribute {
 	 */
 	public String[] getValues() {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		String[] copyValues = new String[values.length];
+		System.arraycopy(values, 0, copyValues, 0, copyValues.length);
+		return copyValues;
 	}
 
 	/**
@@ -99,6 +97,8 @@ public class Attribute {
 	 */
 	public void replaceValues(String[] newValues) {
 		// WRITE YOUR CODE HERE!
+		values = new String[newValues.length];
+		System.arraycopy(newValues, 0, values, 0, newValues.length);
 	}
 
 	/**
@@ -111,9 +111,9 @@ public class Attribute {
 	 */
 	public Attribute clone() {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		// TODO -- Review this as a deep clone, I think it's right but not 100% sure
+		Attribute out = new Attribute(this.name, this.absoluteIndex, this.type, this.getValues());
+		return out;
 	}
 
 	/**

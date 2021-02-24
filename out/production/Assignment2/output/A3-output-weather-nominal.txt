@@ -1,0 +1,13 @@
+************************************************************
+*                                                          *
+*                                                          *
+*                                                          *
+*                                                          *
+************************************************************
+
+ *** items represent (attribute name, information gain) in descending order of gain value ***
+
+(outlook, 0.246750)
+(humidity, 0.151836)
+(windy, 0.048127)
+(temperature, 0.029223)

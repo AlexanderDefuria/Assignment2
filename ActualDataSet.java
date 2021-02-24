@@ -29,6 +29,11 @@ public class ActualDataSet extends DataSet {
 	 */
 	public ActualDataSet(DataReader reader) {
 		// WRITE YOUR CODE HERE!
+		this.dataSourceId = reader.getSourceId();
+		this.matrix = new String[reader.getNumberOfColumns()][reader.getNumberOfDataRows()]; // +1 for headers
+		this.matrix = reader.getData();
+
+
 	}
 
 	/**
@@ -48,7 +53,7 @@ public class ActualDataSet extends DataSet {
 		// WRITE YOUR CODE HERE!
 		
 		//Remove the following line when this method has been implemented
-		return null;
+		return this.dataSourceId;
 	}
 
 	/**
@@ -70,7 +75,7 @@ public class ActualDataSet extends DataSet {
 	 */
 	public String toString() {
 		// WRITE YOUR CODE HERE!
-		
+
 		//Remove the following line when this method has been implemented
 		return null;
 	}

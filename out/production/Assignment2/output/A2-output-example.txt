@@ -1,0 +1,80 @@
+************************************************************
+*                                                          *
+*                                                          *
+*                                                          *
+*                                                          *
+************************************************************
+
+============================================
+THE WEATHER-NOMINAL DATASET:
+
+Actual dataset (weather-nominal.csv) with 5 attribute(s) and 14 row(s)
+ - Metadata for attributes:
+   [absolute index: 0] outlook (nominal): {'sunny', 'overcast', 'rainy'}
+   [absolute index: 1] temperature (nominal): {'hot', 'mild', 'cool'}
+   [absolute index: 2] humidity (nominal): {'high', 'normal'}
+   [absolute index: 3] windy (nominal): {'FALSE', 'TRUE'}
+   [absolute index: 4] class (nominal): {'no', 'yes'}
+
+JAVA IMPLEMENTATION OF THE SPLIT IN FIGURE 5:
+
+Partition 0: Virtual dataset with 4 attribute(s) and 5 row(s)
+ - Dataset is a view over weather-nominal.csv
+ - Row indices in this dataset (w.r.t. its source dataset): [0, 1, 7, 8, 10]
+ - Metadata for attributes:
+   [absolute index: 1] temperature (nominal): {'hot', 'mild', 'cool'}
+   [absolute index: 2] humidity (nominal): {'high', 'normal'}
+   [absolute index: 3] windy (nominal): {'FALSE', 'TRUE'}
+   [absolute index: 4] class (nominal): {'no', 'yes'}
+
+Partition 1: Virtual dataset with 4 attribute(s) and 4 row(s)
+ - Dataset is a view over weather-nominal.csv
+ - Row indices in this dataset (w.r.t. its source dataset): [2, 6, 11, 12]
+ - Metadata for attributes:
+   [absolute index: 1] temperature (nominal): {'hot', 'cool', 'mild'}
+   [absolute index: 2] humidity (nominal): {'high', 'normal'}
+   [absolute index: 3] windy (nominal): {'FALSE', 'TRUE'}
+   [absolute index: 4] class (nominal): {'yes'}
+
+Partition 2: Virtual dataset with 4 attribute(s) and 5 row(s)
+ - Dataset is a view over weather-nominal.csv
+ - Row indices in this dataset (w.r.t. its source dataset): [3, 4, 5, 9, 13]
+ - Metadata for attributes:
+   [absolute index: 1] temperature (nominal): {'mild', 'cool'}
+   [absolute index: 2] humidity (nominal): {'high', 'normal'}
+   [absolute index: 3] windy (nominal): {'FALSE', 'TRUE'}
+   [absolute index: 4] class (nominal): {'yes', 'no'}
+
+============================================
+THE WEATHER-NUMERIC DATASET:
+
+Actual dataset (weather-numeric.csv) with 5 attribute(s) and 14 row(s)
+ - Metadata for attributes:
+   [absolute index: 0] outlook (nominal): {'sunny', 'overcast', 'rainy'}
+   [absolute index: 1] temperature (numeric): {85, 80, 83, 70, 68, 65, 64, 72, 69, 75, 81, 71}
+   [absolute index: 2] humidity (numeric): {85, 90, 86, 96, 80, 70, 65, 95, 75, 91}
+   [absolute index: 3] windy (nominal): {'FALSE', 'TRUE'}
+   [absolute index: 4] play (nominal): {'no', 'yes'}
+
+JAVA IMPLEMENTATION OF THE SPLIT IN FIGURE 9:
+
+Partition 0: Virtual dataset with 5 attribute(s) and 7 row(s)
+ - Dataset is a view over weather-numeric.csv
+ - Row indices in this dataset (w.r.t. its source dataset): [4, 5, 6, 8, 9, 10, 12]
+ - Metadata for attributes:
+   [absolute index: 0] outlook (nominal): {'rainy', 'overcast', 'sunny'}
+   [absolute index: 1] temperature (numeric): {68, 65, 64, 69, 75, 81}
+   [absolute index: 2] humidity (numeric): {80, 70, 65, 75}
+   [absolute index: 3] windy (nominal): {'FALSE', 'TRUE'}
+   [absolute index: 4] play (nominal): {'yes', 'no'}
+
+Partition 1: Virtual dataset with 5 attribute(s) and 7 row(s)
+ - Dataset is a view over weather-numeric.csv
+ - Row indices in this dataset (w.r.t. its source dataset): [0, 1, 2, 3, 7, 11, 13]
+ - Metadata for attributes:
+   [absolute index: 0] outlook (nominal): {'sunny', 'overcast', 'rainy'}
+   [absolute index: 1] temperature (numeric): {85, 80, 83, 70, 72, 71}
+   [absolute index: 2] humidity (numeric): {85, 90, 86, 96, 95, 91}
+   [absolute index: 3] windy (nominal): {'FALSE', 'TRUE'}
+   [absolute index: 4] play (nominal): {'no', 'yes'}
+
