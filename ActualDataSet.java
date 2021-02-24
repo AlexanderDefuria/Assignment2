@@ -37,7 +37,12 @@ public class ActualDataSet extends DataSet {
 		String[] attributeNameList = reader.getAttributeNames();
 		this.attributes = new Attribute[this.numAttributes];
 		for (int i = 0; i < attributeNameList.length; i++) {
-			this.attributes[i] = new Attribute(attributeNameList[i], i, AttributeType.NOMINAL, reader.getData()[i]);
+			int rows = reader.getNumberOfDataRows();
+			String[] columnData = new String[rows];
+			for (int j = 0; j < columnData.length; j++) {
+				columnData[j] = matrix[j][i];
+			}
+			this.attributes[i] = new Attribute(attributeNameList[i], i, AttributeType.NOMINAL, columnData);
 		}
 
 
