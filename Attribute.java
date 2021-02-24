@@ -43,9 +43,9 @@ public class Attribute {
 	 */
 	public Attribute(String name, int absoluteIndex, AttributeType type, String[] values) {
 		// WRITE YOUR CODE HERE!
+		this.type = type;
 		this.name = name;
 		this.absoluteIndex = absoluteIndex;
-		this.type = type;
 		this.values = values;
 	}
 
@@ -53,21 +53,24 @@ public class Attribute {
 	 * @return the name of the attribute
 	 */
 	public String getName() {
-		return name;
+		// WRITE YOUR CODE HERE!
+		return this.name;
 	}
 
 	/**
 	 * @return the absolute index (column number) of the attribute
 	 */
 	public int getAbsoluteIndex() {
-		return absoluteIndex;
+		// WRITE YOUR CODE HERE!
+		return this.absoluteIndex;
 	}
 
 	/**
 	 * @return the type of the attribute
 	 */
 	public AttributeType getType() {
-		return type;
+		// WRITE YOUR CODE HERE!
+		return this.type;
 	}
 
 	/**
@@ -76,8 +79,10 @@ public class Attribute {
 	 *         no other object can change the value set of this attribute.
 	 */
 	public String[] getValues() {
-		Attribute copy = this.clone();
-		return copy.values;
+		// WRITE YOUR CODE HERE!
+		String[] copyValues = new String[values.length];
+		System.arraycopy(values, 0, copyValues, 0, copyValues.length);
+		return copyValues;
 	}
 
 	/**
@@ -92,6 +97,8 @@ public class Attribute {
 	 */
 	public void replaceValues(String[] newValues) {
 		// WRITE YOUR CODE HERE!
+		values = new String[newValues.length];
+		System.arraycopy(newValues, 0, values, 0, newValues.length);
 	}
 
 	/**
@@ -103,9 +110,10 @@ public class Attribute {
 	 * @return a (deep) copy the attribute
 	 */
 	public Attribute clone() {
-		Attribute copy = new Attribute(name, absoluteIndex, type, values);
-
-		return copy;
+		// WRITE YOUR CODE HERE!
+		// TODO -- Review this as a deep clone, I think it's right but not 100% sure
+		Attribute out = new Attribute(this.name, this.absoluteIndex, this.type, this.getValues());
+		return out;
 	}
 
 	/**

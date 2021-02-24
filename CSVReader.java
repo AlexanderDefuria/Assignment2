@@ -46,10 +46,13 @@ public class CSVReader implements DataReader {
 	/**
 	 * Constructs a dataset by loading a CSV file
 	 * 
-	 * @param strFilename is the name of the file
+	 * @param filePath is the name of the file
 	 */
 	public CSVReader(String filePath) throws Exception {
 		this.filePath = filePath;
+
+		//TODO remobe this va
+		this.attributeNames = new String[10];
 	}
 
 
@@ -179,5 +182,6 @@ public class CSVReader implements DataReader {
 
 	public int getNumberOfDataRows() {
 		return numRows;
+
 	}
 }

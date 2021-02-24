@@ -125,7 +125,7 @@ public class VirtualDataSet extends DataSet {
 		System.out.println("THE WEATHER-NOMINAL DATASET:");
 		System.out.println();
 
-		ActualDataSet figure5Actual = new ActualDataSet(new CSVReader("weather-nominal.csv"));
+		ActualDataSet figure5Actual = new ActualDataSet(new CSVReader("C:\\Users\\defur\\OneDrive\\School\\Intro To Computing II\\Assignment2\\datasets\\weather-nominal.csv"));
 
 		System.out.println(figure5Actual);
 
@@ -134,8 +134,7 @@ public class VirtualDataSet extends DataSet {
 		System.out.println("JAVA IMPLEMENTATION OF THE SPLIT IN FIGURE 5:");
 		System.out.println();
 
-		VirtualDataSet[] figure5Partitions = figure5Virtual
-				.partitionByNominallAttribute(figure5Virtual.getAttributeIndex("outlook"));
+		VirtualDataSet[] figure5Partitions = figure5Virtual.partitionByNominallAttribute(figure5Virtual.getAttributeIndex("outlook"));
 
 		for (int i = 0; i < figure5Partitions.length; i++)
 			System.out.println("Partition " + i + ": " + figure5Partitions[i]);
