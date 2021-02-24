@@ -43,6 +43,10 @@ public class VirtualDataSet extends DataSet {
 	 */
 	public VirtualDataSet(ActualDataSet source, int[] rows, Attribute[] attributes) {
 		// WRITE YOUR CODE HERE!
+		this.source = source;
+		this.map = rows;
+
+
 	}
 
 	/**
@@ -51,7 +55,9 @@ public class VirtualDataSet extends DataSet {
 	public String toString() {
 		// WRITE YOUR CODE HERE!
 		
-		//Remove the following line when this method has been implemented
+		for (int i = 0; i < map.length; i++) {
+
+		}
 		return null;
 	}
 
@@ -73,8 +79,7 @@ public class VirtualDataSet extends DataSet {
 	public ActualDataSet getSourceDataSet() {
 		// WRITE YOUR CODE HERE!
 		
-		//Remove the following line when this method has been implemented
-		return null;
+		return source;
 	}
 
 

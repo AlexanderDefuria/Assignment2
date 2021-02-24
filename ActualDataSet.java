@@ -42,7 +42,7 @@ public class ActualDataSet extends DataSet {
 			for (int j = 0; j < columnData.length; j++) {
 				columnData[j] = matrix[j][i];
 			}
-			this.attributes[i] = new Attribute(attributeNameList[i], i, AttributeType.NOMINAL, columnData);
+			this.attributes[i] = new Attribute(attributeNameList[i], i, columnData[0].matches("\\d+") ? AttributeType.NUMERIC : AttributeType.NOMINAL, columnData);
 		}
 
 
@@ -64,7 +64,6 @@ public class ActualDataSet extends DataSet {
 	public String getSourceId() {
 		// WRITE YOUR CODE HERE!
 		
-		//Remove the following line when this method has been implemented
 		return this.dataSourceId;
 	}
 
