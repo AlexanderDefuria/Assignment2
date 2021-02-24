@@ -30,8 +30,15 @@ public class ActualDataSet extends DataSet {
 	public ActualDataSet(DataReader reader) {
 		// WRITE YOUR CODE HERE!
 		this.dataSourceId = reader.getSourceId();
-		this.matrix = new String[reader.getNumberOfColumns()][reader.getNumberOfDataRows()]; // +1 for headers
+		this.matrix = new String[reader.getNumberOfColumns()][reader.getNumberOfDataRows()];
 		this.matrix = reader.getData();
+		this.numAttributes = reader.getAttributeNames().length;
+
+		String[] attributeNameList = reader.getAttributeNames();
+		this.attributes = new Attribute[this.numAttributes];
+		for (int i = 0; i < attributeNameList.length; i++) {
+			this.attributes[i] = new Attribute(attributeNameList[i], i, AttributeType.NOMINAL, reader.getData()[i]);
+		}
 
 
 	}
@@ -43,7 +50,7 @@ public class ActualDataSet extends DataSet {
 		// WRITE YOUR CODE HERE!
 		
 		//Remove the following line when this method has been implemented
-		return null;
+		return matrix[row][attributeIndex];
 	}
 
 	/**
@@ -76,7 +83,6 @@ public class ActualDataSet extends DataSet {
 	public String toString() {
 		// WRITE YOUR CODE HERE!
 
-		//Remove the following line when this method has been implemented
-		return null;
+		return super.toString();
 	}
 }

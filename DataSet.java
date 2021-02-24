@@ -76,9 +76,11 @@ public abstract class DataSet {
 	 */
 	public Attribute getAttribute(int attributeIndex) {
 		if (attributeIndex < 0 || attributeIndex >= numAttributes) {
+			System.out.println(attributeIndex);
+			System.out.println(numAttributes);
 			return null;
 		}
-		return attributes[attributeIndex].clone();
+		return this.attributes[attributeIndex];
 	}
 
 	/**

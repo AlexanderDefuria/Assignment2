@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -50,18 +51,24 @@ public class CSVReader implements DataReader {
 	 */
 	public CSVReader(String filePath) throws Exception {
 		this.filePath = filePath;
-
-		//TODO remobe this va
-		this.attributeNames = new String[10];
+		this.matrix = this.getData();
+		this.attributeNames = this.getAttributeNames();
 	}
 
 
 	public String[] getAttributeNames() {
-		return null;
+		return this.attributeNames;
 	}
 
 	public String[][] getData() {
-		Scanner scanner = new Scanner(filePath);
+		Scanner scanner = null;
+		Scanner lineCounter = null;
+		try {
+			scanner = new Scanner(new File(filePath));
+			lineCounter = new Scanner(new File(filePath));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		boolean firstLine = true;
 
@@ -70,14 +77,28 @@ public class CSVReader implements DataReader {
 		while (scanner.hasNext()) {
 			String str = scanner.nextLine();
 
+
 			if (!str.trim().isEmpty()) {
 
 				if (firstLine) {
 					firstLine = false;
+
 					populateAttributeNames(str);
 
+					int numLines = 0;
+					while (true) {
+						assert lineCounter != null;
+						if (!lineCounter.hasNextLine()) break;
+						lineCounter.nextLine();
+						numLines++;
+					} lineCounter.close();
+
+
+					this.matrix = new String[numLines][attributeNames.length];
+
 				} else {
-					populateRow(str, rowNum++);
+					populateRow(str, rowNum);
+					rowNum++;
 				}
 			}
 		}
@@ -101,6 +122,27 @@ public class CSVReader implements DataReader {
 
 		char[] chars = str.toCharArray();
 		char ch;
+
+		int len = 0;
+
+		for (int i = 0; i < chars.length; i++) {
+			ch = chars[i];
+
+			if (isInQuote) {
+				if (ch == QUOTE_MARK) {
+					isInQuote = false;
+				} else {
+					buffer.append(ch);
+				}
+
+			} else if (ch == QUOTE_MARK) {
+				isInQuote = true;
+			} else if (ch == DELIMITER) {
+				len++;
+			}
+		}
+
+		this.attributeNames = new String[len+1];
 
 		for (int i = 0; i < chars.length; i++) {
 
@@ -170,6 +212,7 @@ public class CSVReader implements DataReader {
 		} else if (chars[chars.length - 1] == ',') {// deal with potentially missing last attribute value
 			matrix[currentRow][position++] = "";
 		}
+
 	}
 
 	public String getSourceId() {
