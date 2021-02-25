@@ -50,7 +50,8 @@ public class VirtualDataSet extends DataSet {
 
 
 		this.source = source;
-		this.map = rows;
+		int[] tmp = new int[rows.length];
+		System.arraycopy(rows, 0, tmp, 0, 1);
 		System.out.println(source.getNumberOfDatapoints());
 
 
