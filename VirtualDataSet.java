@@ -196,7 +196,7 @@ public class VirtualDataSet extends DataSet {
 		boolean sorted = false;
 		int temp;
 		while(!sorted) {
-			sorted = true;
+			
 			for (int i = 0; i < columnMaps.length - 1; i++) {
 				if (Integer.parseInt(this.source.getValueAt(columnMaps[i], attributeIndex)) > Integer.parseInt(this.source.getValueAt(columnMaps[i+1], attributeIndex))) {
 					temp = columnMaps[i];
@@ -205,6 +205,7 @@ public class VirtualDataSet extends DataSet {
 					sorted = false;
 				}
 			}
+			sorted = true;
 		}
 		int[] partitionA = new int[(columnMaps.length % 2) > 0 ? (columnMaps.length/2)+1 : (columnMaps.length/2)];
 		int[] partitionB = new int[(columnMaps.length/2)];
@@ -235,7 +236,7 @@ public class VirtualDataSet extends DataSet {
 		System.out.println("THE WEATHER-NOMINAL DATASET:");
 		System.out.println();
 
-		ActualDataSet figure5Actual = new ActualDataSet(new CSVReader("C:\\Users\\defur\\OneDrive\\School\\Intro To Computing II\\Assignment2\\datasets\\weather-nominal.csv"));
+		ActualDataSet figure5Actual = new ActualDataSet(new CSVReader("./datasets/weather-nominal.csv"));
 
 		System.out.println(figure5Actual);
 
@@ -253,7 +254,7 @@ public class VirtualDataSet extends DataSet {
 		System.out.println("THE WEATHER-NUMERIC DATASET:");
 		System.out.println();
 
-		ActualDataSet figure9Actual = new ActualDataSet(new CSVReader("C:\\Users\\defur\\OneDrive\\School\\Intro To Computing II\\Assignment2\\datasets\\weather-numeric.csv"));
+		ActualDataSet figure9Actual = new ActualDataSet(new CSVReader("./datasets/weather-numeric.csv"));
 
 		System.out.println(figure9Actual);
 
