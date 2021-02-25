@@ -36,14 +36,38 @@ public class ActualDataSet extends DataSet {
 
 		String[] attributeNameList = reader.getAttributeNames();
 		this.attributes = new Attribute[this.numAttributes];
+		int rows = 0;
 		for (int i = 0; i < attributeNameList.length; i++) {
-			int rows = reader.getNumberOfDataRows();
+			rows = reader.getNumberOfDataRows();
 			String[] columnData = new String[rows];
-			for (int j = 0; j < columnData.length; j++) {
-				columnData[j] = matrix[j][i];
+
+			int dataIndex = 0;
+			for (int j = 0; j < reader.getNumberOfDataRows(); j++) {
+				boolean exists = false;
+				for (String existing : columnData) {
+					if (matrix[j][i].equals(existing)) {
+						exists = true;
+						break;
+					}
+				}
+				if (!exists) {
+					columnData[dataIndex] = matrix[j][i] ;
+					dataIndex++;
+				}
 			}
+
+			String[] uniqueValues = new String[dataIndex];
+			for (int k = 0; k < dataIndex; k++) {
+				uniqueValues[k] = columnData[k];
+			}
+
+			columnData = uniqueValues;
+
+
+
 			this.attributes[i] = new Attribute(attributeNameList[i], i, columnData[0].matches("\\d+") ? AttributeType.NUMERIC : AttributeType.NOMINAL, columnData);
 		}
+		this.numRows = rows;
 
 
 	}

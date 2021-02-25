@@ -111,8 +111,6 @@ public class Attribute {
 	 */
 	public Attribute clone() {
 		// WRITE YOUR CODE HERE!
-		// TODO -- Review this as a deep clone, I think it's right but not 100% sure
-		//It's right :)
 		Attribute out = new Attribute(this.name, this.absoluteIndex, this.type, this.getValues());
 		return out;
 	}

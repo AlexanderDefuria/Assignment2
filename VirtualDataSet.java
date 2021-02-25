@@ -1,4 +1,5 @@
 // You are allowed to use LinkedList or other Collection classes in A2 and A3
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -43,8 +44,37 @@ public class VirtualDataSet extends DataSet {
 	 */
 	public VirtualDataSet(ActualDataSet source, int[] rows, Attribute[] attributes) {
 		// WRITE YOUR CODE HERE!
+
+		// For the map, the access index 0,1,2,... is the row in the virtualDataSet
+		// and the number at the index is the row in the source actualDataSet
+
+
 		this.source = source;
 		this.map = rows;
+		System.out.println(source.getNumberOfDatapoints());
+
+
+		for (Attribute attr : attributes) {
+			String[] remaining = new String[attr.getValues().length];
+			int remainingIndex = 0;
+			for (String value : attr.getValues()) {
+				for (int i = 0; i < rows.length; i++) {
+					if (value.equals(source.getValueAt(rows[i], attr.getAbsoluteIndex()))) {
+						remaining[remainingIndex] = value;
+						remainingIndex++;
+						break;
+					}
+				}
+			}
+			String[] temp = remaining;
+			remaining = new String[remainingIndex];
+			for (int i = 0; i < remainingIndex; i++) {
+				remaining[i] = temp[i];
+			}
+
+			attr.replaceValues(remaining);
+
+		}
 
 
 	}
@@ -55,10 +85,8 @@ public class VirtualDataSet extends DataSet {
 	public String toString() {
 		// WRITE YOUR CODE HERE!
 		
-		for (int i = 0; i < map.length; i++) {
 
-		}
-		return null;
+		return super.toString();
 	}
 
 	/**
@@ -68,9 +96,8 @@ public class VirtualDataSet extends DataSet {
 	 */
 	public String getValueAt(int row, int attributeIndex) {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		// TODO - Review this logic
+		return source.getValueAt(map[row], attributeIndex);
 	}
 
 	/**
@@ -78,7 +105,7 @@ public class VirtualDataSet extends DataSet {
 	 */
 	public ActualDataSet getSourceDataSet() {
 		// WRITE YOUR CODE HERE!
-		
+		// TODO - Should just be this no?
 		return source;
 	}
 
