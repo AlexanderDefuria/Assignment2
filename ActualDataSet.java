@@ -34,6 +34,8 @@ public class ActualDataSet extends DataSet {
 		this.matrix = reader.getData();
 		this.numAttributes = reader.getAttributeNames().length;
 
+
+		// TODO review this efficiency
 		String[] attributeNameList = reader.getAttributeNames();
 		this.attributes = new Attribute[this.numAttributes];
 		int rows = 0;
@@ -98,9 +100,13 @@ public class ActualDataSet extends DataSet {
 	 */
 	public VirtualDataSet toVirtual() {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+
+		int[] rows = new int[numRows];
+		for (int i = 0; i < rows.length; i++) {
+			rows[i] = i;
+		}
+
+		return new VirtualDataSet(this, rows, attributes);
 	}
 
 	/**

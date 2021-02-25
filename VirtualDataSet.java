@@ -48,13 +48,16 @@ public class VirtualDataSet extends DataSet {
 		// For the map, the access index 0,1,2,... is the row in the virtualDataSet
 		// and the number at the index is the row in the source actualDataSet
 
-
 		this.source = source;
-		int[] tmp = new int[rows.length];
-		System.arraycopy(rows, 0, tmp, 0, rows.length);
-		System.out.println(source.getNumberOfDatapoints());
+
+		this.map = rows;
+		this.attributes = new Attribute[attributes.length];
 
 
+
+
+		// TODO review this efficiency
+		int index = 0;
 		for (Attribute attr : attributes) {
 			String[] remaining = new String[attr.getValues().length];
 			int remainingIndex = 0;
@@ -74,10 +77,11 @@ public class VirtualDataSet extends DataSet {
 			}
 
 			attr.replaceValues(remaining);
-
+			this.attributes[index] = attr;
+			index++;
 		}
 
-
+		this.numAttributes = this.attributes.length;
 	}
 
 	/**
@@ -85,9 +89,20 @@ public class VirtualDataSet extends DataSet {
 	 */
 	public String toString() {
 		// WRITE YOUR CODE HERE!
-		
+		String out = "Virtual dataset with ";
+		out = out.concat(String.valueOf(attributes.length));
+		out = out.concat(" attribute(s) and ");
+		out = out.concat(String.valueOf(map.length));
+		out = out.concat(" row(s)\n");
+		out = out.concat(" - Dataset is a view over ");
+		out = out.concat(String.valueOf(source.getSourceId()));
+		out = out.concat("\n - Row indices in the dataset (w.r.t its source dataset) ");
+		out = out.concat(Arrays.toString(map));
+		out = out.concat("\n");
+		out = out.concat(source.toString());
 
-		return super.toString();
+
+		return out;
 	}
 
 	/**
@@ -98,7 +113,7 @@ public class VirtualDataSet extends DataSet {
 	public String getValueAt(int row, int attributeIndex) {
 		// WRITE YOUR CODE HERE!
 		// TODO - Review this logic
-		return source.getValueAt(map[row], attributeIndex);
+		return source.getValueAt(map[row], source.getAttributeIndex(attributes[attributeIndex].getName()));
 	}
 
 	/**
@@ -123,9 +138,40 @@ public class VirtualDataSet extends DataSet {
 	 */
 	public VirtualDataSet[] partitionByNominallAttribute(int attributeIndex) {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		Attribute attribute = source.getAttribute(attributeIndex);
+		VirtualDataSet[] out = new VirtualDataSet[attribute.getValues().length];
+		String[] values = attribute.getValues();
+
+		int datasetIndex = 0;
+		for (String value : values) {
+			int rowIndex = 0;
+			int[] rows = new int[source.getNumberOfDatapoints()];
+			for (int i = 0; i < map.length; i++) {
+				if (source.getValueAt(i, attributeIndex).matches(value)){
+					rows[rowIndex] = i;
+					rowIndex++;
+				}
+			}
+			int[] temp = rows;
+			boolean pastFirst = false;
+			int index = 1;
+			for (int x : temp) {
+				if (!pastFirst) {
+					pastFirst = true;
+					continue;
+				}
+				if (x != 0) index++;
+				else break;
+			}
+			rows = new int[index];
+			for (int i = 0; i < index; i++) {
+				rows[i] = temp[i];
+			}
+
+			out[datasetIndex] = new VirtualDataSet(this.source, rows, this.attributes);
+			datasetIndex++;
+		}
+		return out;
 	}
 
 	/**
@@ -145,9 +191,40 @@ public class VirtualDataSet extends DataSet {
 	 */
 	public VirtualDataSet[] partitionByNumericAttribute(int attributeIndex, int valueIndex) {
 		// WRITE YOUR CODE HERE!
-		
-		//Remove the following line when this method has been implemented
-		return null;
+		int[] columnMaps = map;
+
+		boolean sorted = false;
+		int temp;
+		while(!sorted) {
+			sorted = true;
+			for (int i = 0; i < columnMaps.length - 1; i++) {
+				if (Integer.parseInt(this.source.getValueAt(columnMaps[i], attributeIndex)) > Integer.parseInt(this.source.getValueAt(columnMaps[i+1], attributeIndex))) {
+					temp = columnMaps[i];
+					columnMaps[i] = columnMaps[i+1];
+					columnMaps[i+1] = temp;
+					sorted = false;
+				}
+			}
+		}
+		int[] partitionA = new int[(columnMaps.length % 2) > 0 ? (columnMaps.length/2)+1 : (columnMaps.length/2)];
+		int[] partitionB = new int[(columnMaps.length/2)];
+
+		System.arraycopy(columnMaps, 0, partitionA, 0, partitionA.length);
+		System.arraycopy(columnMaps, partitionA.length, partitionB, 0, partitionB.length);
+
+
+		for (int x : columnMaps) {
+			System.out.print(this.source.getValueAt(x, attributeIndex));
+			System.out.print(", ");
+		}
+		System.out.print("\n");
+		System.out.println(Arrays.toString(columnMaps));
+
+		return new VirtualDataSet[]{
+				new VirtualDataSet(this.source, partitionA, this.attributes),
+				new VirtualDataSet(this.source, partitionB, this.attributes),
+		};
+
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -176,7 +253,7 @@ public class VirtualDataSet extends DataSet {
 		System.out.println("THE WEATHER-NUMERIC DATASET:");
 		System.out.println();
 
-		ActualDataSet figure9Actual = new ActualDataSet(new CSVReader("weather-numeric.csv"));
+		ActualDataSet figure9Actual = new ActualDataSet(new CSVReader("C:\\Users\\defur\\OneDrive\\School\\Intro To Computing II\\Assignment2\\datasets\\weather-numeric.csv"));
 
 		System.out.println(figure9Actual);
 
