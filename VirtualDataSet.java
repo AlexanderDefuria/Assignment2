@@ -213,14 +213,6 @@ public class VirtualDataSet extends DataSet {
 		System.arraycopy(columnMaps, 0, partitionA, 0, partitionA.length);
 		System.arraycopy(columnMaps, partitionA.length, partitionB, 0, partitionB.length);
 
-
-		for (int x : columnMaps) {
-			System.out.print(this.source.getValueAt(x, attributeIndex));
-			System.out.print(", ");
-		}
-		System.out.print("\n");
-		System.out.println(Arrays.toString(columnMaps));
-
 		return new VirtualDataSet[]{
 				new VirtualDataSet(this.source, partitionA, this.attributes),
 				new VirtualDataSet(this.source, partitionB, this.attributes),

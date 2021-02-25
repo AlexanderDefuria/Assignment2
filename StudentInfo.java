@@ -17,10 +17,11 @@ public class StudentInfo {
 
 		System.out.println("************************************************************");
 		System.out.println("*                                                          *");
-		System.out.println("*                                                          *");
-		System.out.println("*                                                          *");
+		System.out.println("*Alexander De Furia, 300190815, Section B                  *");
+		System.out.println("*Christopher/William Wood, 300170728, Section A            *");
 		System.out.println("*                                                          *");
 		System.out.println("************************************************************");
+		System.out.println();
 		System.out.println();
 
 	}
