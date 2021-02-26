@@ -54,8 +54,6 @@ public class VirtualDataSet extends DataSet {
 		this.attributes = new Attribute[attributes.length];
 
 
-
-
 		// TODO review this efficiency
 		int index = 0;
 		for (Attribute attr : attributes) {
@@ -138,12 +136,15 @@ public class VirtualDataSet extends DataSet {
 	 */
 	public VirtualDataSet[] partitionByNominallAttribute(int attributeIndex) {
 		// WRITE YOUR CODE HERE!
-		Attribute attribute = source.getAttribute(attributeIndex);
-		VirtualDataSet[] out = new VirtualDataSet[attribute.getValues().length];
-		String[] values = attribute.getValues();
+		Attribute tempAttribute = source.getAttribute(attributeIndex);
+		VirtualDataSet[] out = new VirtualDataSet[tempAttribute.getValues().length];
+		String[] values = tempAttribute.getValues();
 
 		int datasetIndex = 0;
 		for (String value : values) {
+			Attribute attribute = new Attribute(tempAttribute.getName(), tempAttribute.getAbsoluteIndex(), tempAttribute.getType(), new String[]{value});
+			Attribute[] attributes = this.attributes.clone();
+			//attribute = source.getAttribute(attributeIndex);
 			int rowIndex = 0;
 			int[] rows = new int[source.getNumberOfDatapoints()];
 			for (int i = 0; i < map.length; i++) {
@@ -168,7 +169,9 @@ public class VirtualDataSet extends DataSet {
 				rows[i] = temp[i];
 			}
 
-			out[datasetIndex] = new VirtualDataSet(this.source, rows, this.attributes);
+
+			attributes[0].replaceValues(new String[]{"sunny"});
+			out[datasetIndex] = new VirtualDataSet(this.source, rows, attributes);
 			datasetIndex++;
 		}
 		return out;
