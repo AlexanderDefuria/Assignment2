@@ -58,10 +58,52 @@ public class VirtualDataSet extends DataSet {
 		for (int i = 0; i < attributes.length; i++ ) {
 			this.attributes[i] = new Attribute(attributes[i].getName(), attributes[i].getAbsoluteIndex(), attributes[i].getType(), new String[0]);
 			String[] values = new String[rows.length];
-			for (int j = 0; j < map.length; j++) {
-				values[j] = source.getValueAt(map[j], attributes[i].getAbsoluteIndex());
+
+			int count = 0;
+
+			for (int j = 0; j < map.length - 1; j++) {
+				String newValue = source.getValueAt(map[j], attributes[i].getAbsoluteIndex());
+
+				boolean found = false;
+				for (String x : values) {
+					if (x == null) {
+						found = false;
+						break;
+					}
+					if (x.equals(newValue)) {
+						found = true;
+						break;
+					}
+				}
+
+				if (!found && newValue != null	) {
+					count++;
+					values[j] = newValue;
+				}
+
+
 			}
-			this.attributes[i].replaceValues(values);
+
+			int nullCount = 0;
+			for (int x = 0; x < values.length; x++) {
+				if (values[x] != null) {
+					nullCount++;
+				}
+			}
+
+			String[] cleanValues = new String[nullCount];
+			int cleanCount = 0;
+			for (int x = 0; x < values.length; x++) {
+				if (values[x] != null) {
+					cleanValues[cleanCount] = values[x];
+					cleanCount++;
+				}
+			}
+
+
+			this.attributes[i].replaceValues(cleanValues);
+
+
 		}
 		System.out.println();
 
