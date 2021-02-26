@@ -61,7 +61,7 @@ public class VirtualDataSet extends DataSet {
 
 			int count = 0;
 
-			for (int j = 0; j < map.length - 1; j++) {
+			for (int j = 0; j < map.length; j++) {
 				String newValue = source.getValueAt(map[j], attributes[i].getAbsoluteIndex());
 
 				boolean found = false;
@@ -105,8 +105,6 @@ public class VirtualDataSet extends DataSet {
 
 
 		}
-		System.out.println();
-
 	}
 
 	/**
@@ -171,7 +169,6 @@ public class VirtualDataSet extends DataSet {
 		for (String value : values) {
 			Attribute attribute = new Attribute(tempAttribute.getName(), tempAttribute.getAbsoluteIndex(), tempAttribute.getType(), new String[]{value});
 			Attribute[] attributes = this.attributes.clone();
-			//attribute = source.getAttribute(attributeIndex);
 			int rowIndex = 0;
 			int[] rows = new int[source.getNumberOfDatapoints()];
 			for (int i = 0; i < map.length; i++) {
@@ -196,9 +193,21 @@ public class VirtualDataSet extends DataSet {
 				rows[i] = temp[i];
 			}
 
+			Attribute[] outAttributes = new Attribute[attributes.length - 1];
+			boolean found = false;
+			for (int x = 0; x < attributes.length; x++){
+				if (!found)
+					if (attributes[x].getName().equals(attribute.getName())) {
+						found = true;
+					}
+					else {
+						outAttributes[x] = attributes[x];
+					}
+				else
+					outAttributes[x-1] = attributes[x];
+			}
 
-			//attributes[0].replaceValues(new String[]{"sunny"});
-			out[datasetIndex] = new VirtualDataSet(this.source, rows, attributes);
+			out[datasetIndex] = new VirtualDataSet(this.source, rows, outAttributes);
 			datasetIndex++;
 		}
 		return out;
@@ -222,8 +231,8 @@ public class VirtualDataSet extends DataSet {
 	public VirtualDataSet[] partitionByNumericAttribute(int attributeIndex, int valueIndex) {
 		int value = Integer.parseInt(source.getValueAt(valueIndex, attributeIndex));
 
-		ArrayList<Integer> rowsA = new ArrayList<Integer>();
-		ArrayList<Integer> rowsB = new ArrayList<Integer>();
+		LinkedList<Integer> rowsA = new LinkedList<>();
+		LinkedList<Integer> rowsB = new LinkedList<>();
 
 		for (int i = 0; i < this.source.numRows; i++) {
 			if (Integer.parseInt(this.source.getValueAt(i, attributeIndex)) <= value){
@@ -237,6 +246,7 @@ public class VirtualDataSet extends DataSet {
 
 		return new VirtualDataSet[] {
 				new VirtualDataSet(this.getSourceDataSet(), rowsA.stream().mapToInt(i -> i).toArray(), attributes),
+				new VirtualDataSet(this.getSourceDataSet(), rowsB.stream().mapToInt(i -> i).toArray(), attributes),
 
 		};
 
