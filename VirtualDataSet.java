@@ -1,4 +1,5 @@
 // You are allowed to use LinkedList or other Collection classes in A2 and A3
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -6,7 +7,7 @@ import java.util.LinkedList;
  * This class is used for representing a virtual dataset, that is, a dataset
  * that is a view over an actual dataset. A virtual dataset has no data matrix
  * of its own.
- * 
+ *
  * @author Mehrdad Sabetzadeh, University of Ottawa
  * @author Guy-Vincent Jourdan, University of Ottawa
  *
@@ -32,7 +33,7 @@ public class VirtualDataSet extends DataSet {
 	 * sets of the attributes. Since a virtual dataset is only a subset of an actual
 	 * dataset, it is likely that some or all of its attributes may have smaller
 	 * value sets.
-	 * 
+	 *
 	 * @param source     is the source dataset (always an instance of ActualDataSet)
 	 * @param rows       is the set of rows from the source dataset that belong to
 	 *                   this virtual dataset
@@ -49,37 +50,21 @@ public class VirtualDataSet extends DataSet {
 		// and the number at the index is the row in the source actualDataSet
 
 		this.source = source;
-
 		this.map = rows;
 		this.attributes = new Attribute[attributes.length];
-
-
-		// TODO review this efficiency
-		int index = 0;
-		for (Attribute attr : attributes) {
-			String[] remaining = new String[attr.getValues().length];
-			int remainingIndex = 0;
-			for (String value : attr.getValues()) {
-				for (int i = 0; i < rows.length; i++) {
-					if (value.equals(source.getValueAt(rows[i], attr.getAbsoluteIndex()))) {
-						remaining[remainingIndex] = value;
-						remainingIndex++;
-						break;
-					}
-				}
-			}
-			String[] temp = remaining;
-			remaining = new String[remainingIndex];
-			for (int i = 0; i < remainingIndex; i++) {
-				remaining[i] = temp[i];
-			}
-
-			attr.replaceValues(remaining);
-			this.attributes[index] = attr;
-			index++;
-		}
-
 		this.numAttributes = this.attributes.length;
+
+
+		for (int i = 0; i < attributes.length; i++ ) {
+			this.attributes[i] = new Attribute(attributes[i].getName(), attributes[i].getAbsoluteIndex(), attributes[i].getType(), new String[0]);
+			String[] values = new String[rows.length];
+			for (int j = 0; j < map.length; j++) {
+				values[j] = source.getValueAt(map[j], attributes[i].getAbsoluteIndex());
+			}
+			this.attributes[i].replaceValues(values);
+		}
+		System.out.println();
+
 	}
 
 	/**
@@ -97,7 +82,7 @@ public class VirtualDataSet extends DataSet {
 		out = out.concat("\n - Row indices in the dataset (w.r.t its source dataset) ");
 		out = out.concat(Arrays.toString(map));
 		out = out.concat("\n");
-		out = out.concat(source.toString());
+		out = out.concat(super.toString());
 
 
 		return out;
@@ -127,7 +112,7 @@ public class VirtualDataSet extends DataSet {
 	/**
 	 * This method splits the virtual dataset over a nominal attribute. This process
 	 * has been discussed and exemplified in detail in the assignment description.
-	 * 
+	 *
 	 * @param attributeIndex is the index of the nominal attribute over which we
 	 *                       want to split.
 	 * @return a set (array) of partitions resulting from the split. The partitions
@@ -170,7 +155,7 @@ public class VirtualDataSet extends DataSet {
 			}
 
 
-			attributes[0].replaceValues(new String[]{"sunny"});
+			//attributes[0].replaceValues(new String[]{"sunny"});
 			out[datasetIndex] = new VirtualDataSet(this.source, rows, attributes);
 			datasetIndex++;
 		}
@@ -181,7 +166,7 @@ public class VirtualDataSet extends DataSet {
 	 * This method splits the virtual dataset over a given numeric attribute at a
 	 * specific value from the value set of that attribute. This process has been
 	 * discussed and exemplified in detail in the assignment description.
-	 * 
+	 *
 	 * @param attributeIndex is the index of the numeric attribute over which we
 	 *                       want to split.
 	 * @param valueIndex     is the index of the value (in the value set of the
@@ -193,32 +178,24 @@ public class VirtualDataSet extends DataSet {
 	 *         the partitions.
 	 */
 	public VirtualDataSet[] partitionByNumericAttribute(int attributeIndex, int valueIndex) {
-		// WRITE YOUR CODE HERE!
-		int[] columnMaps = map;
+		int value = Integer.parseInt(source.getValueAt(valueIndex, attributeIndex));
 
-		boolean sorted = false;
-		int temp;
-		while(!sorted) {
-			
-			for (int i = 0; i < columnMaps.length - 1; i++) {
-				if (Integer.parseInt(this.source.getValueAt(columnMaps[i], attributeIndex)) > Integer.parseInt(this.source.getValueAt(columnMaps[i+1], attributeIndex))) {
-					temp = columnMaps[i];
-					columnMaps[i] = columnMaps[i+1];
-					columnMaps[i+1] = temp;
-					sorted = false;
-				}
+		ArrayList<Integer> rowsA = new ArrayList<Integer>();
+		ArrayList<Integer> rowsB = new ArrayList<Integer>();
+
+		for (int i = 0; i < this.source.numRows; i++) {
+			if (Integer.parseInt(this.source.getValueAt(i, attributeIndex)) <= value){
+				rowsA.add(i);
+			} else {
+				rowsB.add(i);
 			}
-			sorted = true;
 		}
-		int[] partitionA = new int[(columnMaps.length % 2) > 0 ? (columnMaps.length/2)+1 : (columnMaps.length/2)];
-		int[] partitionB = new int[(columnMaps.length/2)];
 
-		System.arraycopy(columnMaps, 0, partitionA, 0, partitionA.length);
-		System.arraycopy(columnMaps, partitionA.length, partitionB, 0, partitionB.length);
 
-		return new VirtualDataSet[]{
-				new VirtualDataSet(this.source, partitionA, this.attributes),
-				new VirtualDataSet(this.source, partitionB, this.attributes),
+
+		return new VirtualDataSet[] {
+				new VirtualDataSet(this.getSourceDataSet(), rowsA.stream().mapToInt(i -> i).toArray(), attributes),
+
 		};
 
 	}
@@ -285,6 +262,7 @@ public class VirtualDataSet extends DataSet {
 
 		for (int i = 0; i < figure9Partitions.length; i++)
 			System.out.println("Partition " + i + ": " + figure9Partitions[i]);
+
 
 	}
 }
