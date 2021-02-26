@@ -50,7 +50,9 @@ public class VirtualDataSet extends DataSet {
 
 		this.source = source;
 
-		this.map = rows;
+		int[] tmp = new int[rows.length];
+		System.arraycopy(rows, 0, tmp, 0, rows.length);
+		this.map = tmp;
 		this.attributes = new Attribute[attributes.length];
 
 
@@ -170,6 +172,7 @@ public class VirtualDataSet extends DataSet {
 
 			out[datasetIndex] = new VirtualDataSet(this.source, rows, this.attributes);
 			datasetIndex++;
+			return out;
 		}
 		return out;
 	}
