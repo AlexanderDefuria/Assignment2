@@ -68,7 +68,7 @@ public class VirtualDataSet extends DataSet {
 				for (String x : values) {
 					if (x == null) {
 						found = false;
-						break;
+						continue;
 					}
 					if (x.equals(newValue)) {
 						found = true;
@@ -88,6 +88,7 @@ public class VirtualDataSet extends DataSet {
 			for (int x = 0; x < values.length; x++) {
 				if (values[x] != null) {
 					nullCount++;
+
 				}
 			}
 
